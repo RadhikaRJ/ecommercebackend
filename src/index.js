@@ -17,6 +17,9 @@ app.use("/offer", offerRouter);
 const cartRouter = require("../src/routers/cart.router");
 app.use("/cart", cartRouter);
 
+const userRouter = require("../src/routers/user.router");
+app.use("/user", userRouter);
+
 app.get("/", (req, res) => {
   res.json({ Hello: "world" });
 });
