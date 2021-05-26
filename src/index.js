@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+
 const port = 3000;
 const app = express();
 
@@ -10,6 +10,9 @@ initializeDbConnection();
 
 const categoryRouter = require("../src/routers/category.router");
 app.use("/category", categoryRouter);
+
+const offerRouter = require("../src/routers/offer.router");
+app.use("/offer", offerRouter);
 
 app.get("/", (req, res) => {
   res.json({ Hello: "world" });
@@ -23,13 +26,11 @@ app.use((req, res) => {
 });
 
 app.use(function (err, req, res, next) {
-  res
-    .status(500)
-    .json({
-      success: false,
-      message: "Something went wrong!",
-      errMessage: err.message,
-    });
+  res.status(500).json({
+    success: false,
+    message: "Something went wrong!",
+    errMessage: err.message,
+  });
 });
 
 app.listen(port, () => {

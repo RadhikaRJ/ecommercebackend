@@ -1,47 +1,40 @@
 const express = require("express");
+const router = express.Router();
 
 const { Category } = require("../models/category.model");
 
-const router = express.Router();
-
-function myLogger(req, res, next) {
-  if (req.params) {
-    console.log("Req params", req.params);
-    console.log("Req type: ", req.method);
-  }
-  next();
-}
-
-router.use("/", myLogger);
 router
   .route("/")
   .get(async (req, res) => {
     try {
       const category = await Category.find({});
       res.json({ success: true, category });
-    } catch (err) {
-      console.log("error", err.message);
-      res.status(500).json({
-        success: false,
-        errorMsg: "Something went wrong",
-        errMsg: error.message,
-      });
+    } catch (error) {
+      console.log("error while fetching category data");
+      res
+        .status(500)
+        .json({
+          success: false,
+          errMsg: "error while fetching category data",
+          err: error.message,
+        });
     }
   })
   .post(async (req, res) => {
-    const category = req.body;
-    console.log("the category data received is", { category });
-    let newCategory = new Category(category);
     try {
+      const category = req.body;
+      let newCategory = new Category(category);
       newCategory = await newCategory.save();
       res.json({ success: true, newCategory });
-    } catch (err) {
-      console.log("error", err.message);
-      res.json({
-        success: false,
-        errorMsg: "Something went wrong",
-        errMsg: error.message,
-      });
+    } catch (error) {
+      console.log("error while inserting category data");
+      res
+        .status(500)
+        .json({
+          success: false,
+          errMsg: "error while inserting category data",
+          err: error.message,
+        });
     }
   });
 
