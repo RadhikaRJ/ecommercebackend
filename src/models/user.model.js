@@ -34,7 +34,8 @@ const UserSchema = new Schema(
       maxLength: [10, "Contact number should have exactly 10 digits"],
       minLength: [10, "Contact number should have exactly 10 digits"],
     },
-    cart_id: String,
+    cart_id: { type: Schema.Types.ObjectId, ref: "Cart" },
+
     address_type: String,
   },
   {

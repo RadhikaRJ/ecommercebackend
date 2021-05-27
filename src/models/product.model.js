@@ -21,10 +21,10 @@ const ProductSchema = new Schema(
       required: "price of product is a required field",
     },
     offer_id: {
-      type: String,
+      offer_type: { type: Schema.Types.ObjectId, ref: "Offer" },
     },
     category_id: {
-      type: String,
+      category_type: { type: Schema.Types.ObjectId, ref: "Category" },
     },
     availability: {
       type: Boolean,
