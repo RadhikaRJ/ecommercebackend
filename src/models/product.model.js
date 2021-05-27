@@ -20,12 +20,8 @@ const ProductSchema = new Schema(
       type: Number,
       required: "price of product is a required field",
     },
-    offer_id: {
-      offer_type: { type: Schema.Types.ObjectId, ref: "Offer" },
-    },
-    category_id: {
-      category_type: { type: Schema.Types.ObjectId, ref: "Category" },
-    },
+    offer_id: { type: Schema.Types.ObjectId, ref: "Offer" },
+    category_id: { type: Schema.Types.ObjectId, ref: "Category" },
     availability: {
       type: Boolean,
       required: "Availability of product is required product detail",

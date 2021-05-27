@@ -4,9 +4,7 @@ const { Schema } = mongoose;
 
 const CartSchema = new Schema(
   {
-    cart_product_list: {
-      type: Schema.Types.Mixed,
-    },
+    cart_product_list: { type: Schema.Types.Mixed },
   },
   {
     timestamps: true,
