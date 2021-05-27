@@ -42,6 +42,7 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.listen(process.env.PORT || port, () => {
-  console.log(`Sample app listening at port ${port}`);
-});
+app.listen(process.env.PORT || port);
+// () => {
+//   console.log(`Sample app listening at port ${port}`);
+// }
