@@ -1,26 +1,26 @@
 const express = require("express");
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
 
-const { initializeDbConnection } = require("../src/database/db.connection");
+const { initializeDbConnection } = require("./src/database/db.connection");
 initializeDbConnection();
 
-const categoryRouter = require("../src/routers/category.router");
+const categoryRouter = require("./src/routers/category.router");
 app.use("/category", categoryRouter);
 
-const offerRouter = require("../src/routers/offer.router");
+const offerRouter = require("./src/routers/offer.router");
 app.use("/offer", offerRouter);
 
-const cartRouter = require("../src/routers/cart.router");
+const cartRouter = require("./src/routers/cart.router");
 app.use("/cart", cartRouter);
 
-const userRouter = require("../src/routers/user.router");
+const userRouter = require("./src/routers/user.router");
 app.use("/user", userRouter);
 
-const productRouter = require("../src/routers/product.router");
+const productRouter = require("./src/routers/product.router");
 app.use("/product", productRouter);
 
 app.get("/", (req, res) => {
