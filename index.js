@@ -1,6 +1,5 @@
 const express = require("express");
 
-const port = 3000;
 const app = express();
 
 app.use(express.json());
@@ -42,7 +41,12 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.listen(process.env.PORT || port);
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+app.listen(port);
+
 // () => {
 //   console.log(`Sample app listening at port ${port}`);
 // }
