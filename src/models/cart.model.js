@@ -2,9 +2,21 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
+const cartSubSchema = new Schema(
+  {
+    itemInCart_id: String,
+    itemInCart_quantity: {
+      type: Number,
+      reuired: "Quantity of item added to cart is a required field",
+    },
+  },
+  {
+    _id: false,
+  }
+);
 const CartSchema = new Schema(
   {
-    cart_product_list: { type: Schema.Types.Mixed },
+    cart_product_list: [cartSubSchema],
   },
   {
     timestamps: true,
