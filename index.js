@@ -22,6 +22,9 @@ app.use("/user", userRouter);
 const productRouter = require("./src/routers/product.router");
 app.use("/product", productRouter);
 
+const wishlistRouter = require("./src/routers/wishlist.router");
+app.use("/wishlist", wishlistRouter);
+
 app.get("/", (req, res) => {
   res.json({ Hello: "world" });
 });
@@ -43,8 +46,6 @@ app.use(function (err, req, res, next) {
 
 let port = process.env.PORT || 3000;
 
-app.listen(port);
-
-// () => {
-//   console.log(`Sample app listening at port ${port}`);
-// }
+app.listen(port, () => {
+  console.log(`Sample app listening at port ${port}`);
+});
