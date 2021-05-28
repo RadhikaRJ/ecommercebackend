@@ -34,4 +34,18 @@ router
     }
   });
 
+router.route("/:productId").get(async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const product = await Product.findById(productId);
+    res.json({ success: true, product });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Unable to fetch Product Details",
+      errMsg: error.message,
+    });
+  }
+});
+
 module.exports = router;
