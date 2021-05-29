@@ -33,6 +33,11 @@ const ProductSchema = new Schema(
     url: {
       type: String,
     },
+    quantity: {
+      type: Number,
+      required:
+        "Quantity of product is required. set value to 1 when inserting new product data details.",
+    },
   },
   {
     timestamp: true,

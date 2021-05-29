@@ -57,7 +57,7 @@ router.param("offerId", async (req, res, next, offerId) => {
     next();
   } catch (error) {
     res.status(500).json({
-      success: true,
+      success: false,
       message: "Unable to find offer",
       errMsg: error.message,
     });
