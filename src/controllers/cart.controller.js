@@ -1,6 +1,6 @@
 const { Cart } = require("../models/cart.model");
 const { Product } = require("../models/product.model");
-
+const mongoose = require("mongoose");
 const getCartDetailsAssociatedWithUserId = async (req, res) => {
   try {
     const { id } = req.params;
@@ -42,6 +42,7 @@ const addProductToCart = async (req, res) => {
     const { id } = req.params;
 
     const { itemInCart_id, itemInCart_quantity } = req.body;
+    //itemInCart_id = mongoose.Types.ObjectId(itemInCart_id);
     console.log("productID", itemInCart_id, "quantity", itemInCart_quantity);
     const productRegistered = await Product.findById({ _id: itemInCart_id });
 
@@ -66,8 +67,8 @@ const addProductToCart = async (req, res) => {
     }
 
     const newProductToBeAddedToCart = {
-      itemInCart_id: itemInCart_id,
-      itemInCart_quantity: itemInCart_quantity,
+      itemInCart_id,
+      itemInCart_quantity,
     };
 
     const updatedProducts = [
@@ -75,15 +76,17 @@ const addProductToCart = async (req, res) => {
       newProductToBeAddedToCart,
     ];
 
+    console.log("updatedProducts", updatedProducts);
     const updatedUserCartDetails = {
       user: userCart.user,
       cart_product_list: updatedProducts,
     };
 
+    console.log("updatedUserCartDetails", updatedUserCartDetails);
     const updatedUserCart = await Cart.findOneAndUpdate(
-      { _id: userCart._id },
-      { new: true },
-      { $set: updatedUserCartDetails }
+      { user: id },
+      { $set: updatedUserCartDetails },
+      { new: true }
     ).populate("cart_product_list.itemInCart_id", [
       "name",
       "description",
