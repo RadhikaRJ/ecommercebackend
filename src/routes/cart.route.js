@@ -2,6 +2,7 @@ const express = require("express");
 const { Cart } = require("../models/cart.model");
 const { extend } = require("lodash");
 const router = express.Router();
+const { addProductToCart } = require("../controllers/cart.controller");
 
 function cartMiddleware(req, res, next) {
   if (req.params) {
@@ -12,6 +13,8 @@ function cartMiddleware(req, res, next) {
 }
 
 router.use("/:id", cartMiddleware);
+
+// router.post("/", addProductToCart);
 
 router
   .route("/")

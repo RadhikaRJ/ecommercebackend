@@ -16,6 +16,10 @@ const wishlistSubschema = new Schema(
 
 const WishlistSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     wishlist_product_list: [wishlistSubschema],
   },
   {

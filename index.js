@@ -7,22 +7,22 @@ app.use(cors());
 const { initializeDbConnection } = require("./src/database/db.connection");
 initializeDbConnection();
 
-const categoryRouter = require("./src/route/category.route");
+const categoryRouter = require("./src/routes/category.route");
 app.use("/category", categoryRouter);
 
-const offerRouter = require("./src/route/offer.route");
+const offerRouter = require("./src/routes/offer.route");
 app.use("/offer", offerRouter);
 
-const cartRouter = require("./src/route/cart.route");
+const cartRouter = require("./src/routes/cart.route");
 app.use("/cart", cartRouter);
 
-const userRouter = require("./src/route/user.route");
+const userRouter = require("./src/routes/user.route");
 app.use("/user", userRouter);
 
-const productRouter = require("./src/route/product.route");
+const productRouter = require("./src/routes/product.route");
 app.use("/product", productRouter);
 
-const wishlistRouter = require("./src/route/wishlist.route");
+const wishlistRouter = require("./src/routes/wishlist.route");
 app.use("/wishlist", wishlistRouter);
 
 app.get("/", (req, res) => {

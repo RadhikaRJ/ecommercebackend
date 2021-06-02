@@ -37,6 +37,7 @@ const UserSchema = new Schema(
     cart_id: { type: Schema.Types.ObjectId, ref: "Cart" },
 
     address_type: String,
+    wishlist_id: { type: Schema.Types.ObjectId, ref: "Wishlist" },
   },
   {
     timestamps: true,

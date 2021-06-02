@@ -19,6 +19,10 @@ const cartSubSchema = new Schema(
 );
 const CartSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     cart_product_list: [cartSubSchema],
   },
   {
