@@ -45,7 +45,20 @@ router
 
 router.param("wishlistId", async (req, res, next, wishlistId) => {
   try {
-    const wishlist = await WishList.findById(wishlistId);
+    const wishlist = await WishList.findOne({ _id: wishlistId }).populate(
+      "wishlist_product_list.product_id",
+      [
+        "name",
+        "description",
+        "price",
+        "offer_id",
+        "category_id",
+        "availability",
+        "fast_delivery",
+        "url",
+        "quantity",
+      ]
+    );
     if (!wishlist) {
       res.json({ success: false, message: "Unable to find wishlist" });
     }

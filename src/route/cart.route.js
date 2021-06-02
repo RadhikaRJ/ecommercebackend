@@ -53,7 +53,21 @@ router
 
 router.param("cartId", async (req, res, next, cartId) => {
   try {
-    const cart = await Cart.findById(cartId);
+    const cart = await Cart.findOne({ _id: cartId }).populate(
+      "cart_product_list.itemInCart_id",
+      [
+        "name",
+        "description",
+        "price",
+        "offer_id",
+        "category_id",
+        "availability",
+        "fast_delivery",
+        "url",
+        "quantity",
+      ]
+    );
+
     if (!cart) {
       res.status(400).json({ success: false, errMsg: "cart not found" });
     }

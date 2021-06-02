@@ -4,7 +4,10 @@ const { Schema } = mongoose;
 
 const cartSubSchema = new Schema(
   {
-    itemInCart_id: String,
+    itemInCart_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
     itemInCart_quantity: {
       type: Number,
       reuired: "Quantity of item added to cart is a required field",

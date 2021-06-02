@@ -4,7 +4,10 @@ const { Schema } = mongoose;
 
 const wishlistSubschema = new Schema(
   {
-    product_id: String,
+    product_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
   },
   {
     _id: false,

@@ -46,7 +46,7 @@ router
 
 router.param("categoryId", async (req, res, next, categoryId) => {
   try {
-    const category = await Category.findById(categoryId);
+    const category = await Category.findOne({ _id: categoryId });
     if (!category) {
       res
         .status(400)

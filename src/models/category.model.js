@@ -6,6 +6,7 @@ const CategorySchema = Schema(
   {
     category_name: {
       type: String,
+
       required: "Category name is a required field",
     },
   },
