@@ -2,10 +2,20 @@ const mongoose = require("mongoose");
 const env = require("dotenv").config({ path: "./.env" });
 
 function initializeDbConnection() {
+  const mongoUri = process.env.MONGODB_CONNECTION_URI;
+  mongoose.set("useNewUrlParser", true);
+  mongoose.set("useFindAndModify", false);
+  mongoose.set("useCreateIndex", true);
+  mongoose.set("useUnifiedTopology", true);
   mongoose
-    .connect(process.env.MONGODB_CONNECTION_URI, {
+    .connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    })
+    .then(() => {
+      console.log(`MongoDB server started at ${String(mongoUri)}`);
     })
     .then(() => console.log("Connection to Mongoose successful"))
     .catch((err) =>
