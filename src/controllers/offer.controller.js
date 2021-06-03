@@ -4,7 +4,7 @@ const retrieveAllOffers = async (req, res) => {
   try {
     const allOffers = await Offer.find({});
     if (!allOffers) {
-      res
+      return res
         .status(400)
         .json({ success: false, message: "Offers detail not found!" });
     }
@@ -26,12 +26,6 @@ const addNewOffer = async (req, res) => {
     let newOffer = new Offer({ offer_name });
     newOffer = await newOffer.save();
 
-    if (!newOffer) {
-      res
-        .status(400)
-        .json({ success: false, message: "Unable to add new offer" });
-    }
-
     res.status(200).json({ success: true, newOffer });
   } catch (error) {
     console.log(error);
@@ -48,7 +42,7 @@ const getParticularOfferDetails = async (req, res) => {
     const { id } = req.params;
     const offer = await Offer.findById({ _id: id });
     if (!offer) {
-      res
+      return res
         .status(400)
         .json({ success: false, message: "Offer details not found" });
     }
@@ -68,11 +62,7 @@ const removeOffer = async (req, res) => {
   try {
     const { id } = req.body;
     const result = await Offer.findByIdAndRemove({ _id: id });
-    if (!result) {
-      res
-        .status(400)
-        .json({ success: false, message: "could not remove the Offer" });
-    }
+
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);

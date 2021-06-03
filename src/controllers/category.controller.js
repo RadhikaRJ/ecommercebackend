@@ -4,7 +4,9 @@ const getAllCategories = async (req, res) => {
   try {
     const allCategories = await Category.find({});
     if (!allCategories) {
-      res.status(400).json({ success: false, message: "No categories found!" });
+      return res
+        .status(400)
+        .json({ success: false, message: "No categories found!" });
     }
 
     res.status(200).json({ success: true, allCategories });
@@ -39,7 +41,9 @@ const retrieveParticularCategory = async (req, res) => {
     const { id } = req.params;
     const category = await Category.findById({ _id: id });
     if (!category) {
-      res.status(400).json({ success: false, message: "category not found" });
+      return res
+        .status(400)
+        .json({ success: false, message: "category not found" });
     }
     res.status(200).json({ success: true, category });
   } catch (error) {
