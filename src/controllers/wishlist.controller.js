@@ -89,7 +89,49 @@ const addProductToUserWishlist = async (req, res) => {
   }
 };
 
-const removeProductFromUsersWishlist = async (req, res) => {};
+const removeProductFromUsersWishlist = async (req, res) => {
+  try {
+    const { id, product_id } = req.body;
+    const userWishlist = await WishList.findOne({ user: id });
+    const { wishlist_product_list } = userWishlist;
+
+    const userWishListWithProductRemoved = wishlist_product_list.filter(
+      (item) => {
+        return item.product_id != product_id;
+      }
+    );
+
+    const updatedWishlist = {
+      user: userWishlist.user,
+      wishlist_product_list: userWishListWithProductRemoved,
+    };
+
+    const updatedUserWishlist = await WishList.findOneAndUpdate(
+      { user: id },
+      { $set: updatedWishlist },
+      { new: true }
+    ).populate("wishlist_product_list.product_id", [
+      "name",
+      "description",
+      "price",
+      "offer_id",
+      "category_id",
+      "availability",
+      "fast_delivery",
+      "url",
+      "quantity",
+    ]);
+
+    res.json({ success: true, updatedUserWishlist });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      errMsg: error.message,
+    });
+  }
+};
 
 module.exports = {
   addProductToUserWishlist,
