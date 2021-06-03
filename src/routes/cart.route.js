@@ -3,7 +3,12 @@ const { Cart } = require("../models/cart.model");
 const { extend } = require("lodash");
 const router = express.Router();
 const controllers = require("../controllers/cart.controller");
-const { getCartDetailsAssociatedWithUserId, addProductToCart } = controllers;
+const {
+  getCartDetailsAssociatedWithUserId,
+  addProductToCart,
+  updateProductDetailsInCart,
+  removeProductFromCart,
+} = controllers;
 
 function cartMiddleware(req, res, next) {
   if (req.params) {
@@ -15,13 +20,13 @@ function cartMiddleware(req, res, next) {
 
 router.use("/:id", cartMiddleware);
 //get user's cart details
-router.get("/:id", getCartDetailsAssociatedWithUserId);
+router.get("/", getCartDetailsAssociatedWithUserId);
 //add product to user's cart
-router.post("/:id", addProductToCart);
+router.post("/", addProductToCart);
 //update product in user's cart
-//router.post("/updateCart/:id",updateProductDetailsInCart);
+router.post("/:id", updateProductDetailsInCart);
 //delete product from user's cart
-//router.delete("/:id",removeProductFromCart)
+router.delete("/:id", removeProductFromCart);
 
 // router
 //   .route("/")

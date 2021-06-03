@@ -1,9 +1,10 @@
 const { Cart } = require("../models/cart.model");
 const { Product } = require("../models/product.model");
 const mongoose = require("mongoose");
+
 const getCartDetailsAssociatedWithUserId = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const userCart = await Cart.findOne({ user: id }).populate(
       "cart_product_list.itemInCart_id",
       [
@@ -39,9 +40,7 @@ const getCartDetailsAssociatedWithUserId = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const { itemInCart_id, itemInCart_quantity } = req.body;
+    const { id, itemInCart_id, itemInCart_quantity } = req.body;
     //itemInCart_id = mongoose.Types.ObjectId(itemInCart_id);
     console.log("productID", itemInCart_id, "quantity", itemInCart_quantity);
     const productRegistered = await Product.findById({ _id: itemInCart_id });
@@ -105,4 +104,107 @@ const addProductToCart = async (req, res) => {
     res.status(500).json({ success: false, message: "Something went wrong!" });
   }
 };
-module.exports = { getCartDetailsAssociatedWithUserId, addProductToCart };
+
+const updateProductDetailsInCart = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { itemInCart_id, itemInCart_quantity } = req.body;
+
+    const userCart = await Cart.findOne({ user: id });
+
+    const { cart_product_list } = userCart;
+
+    const updatedCart = cart_product_list.map((item) => {
+      if (item.itemInCart_id == itemInCart_id) {
+        item.itemInCart_quantity = itemInCart_quantity;
+      }
+      console.log(
+        "item.itemInCart_id: ",
+        item.itemInCart_id,
+        "item.itemInCart_quantity: ",
+        item.itemInCart_quantity
+      );
+      return item;
+    });
+
+    const updatedUserCartDetails = {
+      user: userCart.user,
+      cart_product_list: updatedCart,
+    };
+
+    const updateProductQuantityInUserCart = await Cart.findOneAndUpdate(
+      { user: id },
+      { $set: updatedUserCartDetails },
+      { new: true }
+    ).populate("cart_product_list.itemInCart_id", [
+      "name",
+      "description",
+      "price",
+      "offer_id",
+      "category_id",
+      "availability",
+      "fast_delivery",
+      "url",
+      "quantity",
+    ]);
+
+    res.status(200).json({ sucess: true, updateProductQuantityInUserCart });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "something went wrong",
+      errMsg: error.message,
+    });
+  }
+};
+
+const removeProductFromCart = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { itemInCart_id } = req.body;
+
+    const userCart = await Cart.findOne({ user: id });
+
+    const { cart_product_list } = userCart;
+
+    const updatedCart = cart_product_list.filter((item) => {
+      return item.itemInCart_id != itemInCart_id;
+    });
+
+    const updatedCartAfterProductRemoval = {
+      user: userCart.user,
+      cart_product_list: updatedCart,
+    };
+
+    const cartUpdatedPostRemoval = await Cart.findOneAndUpdate(
+      { user: id },
+      { $set: updatedCartAfterProductRemoval },
+      { new: true }
+    ).populate("cart_product_list.itemInCart_id", [
+      "name",
+      "description",
+      "price",
+      "offer_id",
+      "category_id",
+      "availability",
+      "fast_delivery",
+      "url",
+      "quantity",
+    ]);
+
+    res.status(200).json({ success: true, cartUpdatedPostRemoval });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "something went wrong",
+      errMsg: error.message,
+    });
+  }
+};
+
+module.exports = {
+  getCartDetailsAssociatedWithUserId,
+  addProductToCart,
+  updateProductDetailsInCart,
+  removeProductFromCart,
+};
