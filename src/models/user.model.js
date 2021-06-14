@@ -28,9 +28,13 @@ const UserSchema = new Schema(
       pincode: Number,
       landmark: String,
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
     contact_number: {
       type: Number,
-      required: "user's contact number is required field",
+
       maxLength: [10, "Contact number should have exactly 10 digits"],
       minLength: [10, "Contact number should have exactly 10 digits"],
     },
