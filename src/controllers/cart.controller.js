@@ -1,6 +1,5 @@
 const { Cart } = require("../models/cart.model");
 const { Product } = require("../models/product.model");
-const mongoose = require("mongoose");
 
 const getCartDetailsAssociatedWithUserId = async (req, res) => {
   try {
@@ -41,7 +40,7 @@ const getCartDetailsAssociatedWithUserId = async (req, res) => {
 const addProductToCart = async (req, res) => {
   try {
     const { id, itemInCart_id, itemInCart_quantity } = req.body;
-    //itemInCart_id = mongoose.Types.ObjectId(itemInCart_id);
+
     console.log("productID", itemInCart_id, "quantity", itemInCart_quantity);
     const productRegistered = await Product.findById({ _id: itemInCart_id });
 
