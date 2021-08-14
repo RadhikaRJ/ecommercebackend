@@ -3,7 +3,7 @@ const { WishList } = require("../models/wishlist.model");
 
 const retrieveAllProductsInUserWishlist = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id = req.user;
 
     const userWishlist = await WishList.findOne({ user: id }).populate(
       "wishlist_product_list.product_id",
@@ -39,8 +39,8 @@ const retrieveAllProductsInUserWishlist = async (req, res) => {
 
 const addProductToUserWishlist = async (req, res) => {
   try {
-    const { id, product_id } = req.body;
-
+    const { product_id } = req.body;
+    const id = req.user;
     const verifyIfProductIsRegistered = await Product.findOne({
       _id: product_id,
     });
@@ -51,12 +51,13 @@ const addProductToUserWishlist = async (req, res) => {
     }
 
     const userWishlist = await WishList.findOne({ user: id });
-
+    console.log("userWishlist: ", userWishlist);
     const newProduct = {
       product_id,
     };
-    const updatedWishlist = [...userWishlist.wishlist_product_list, newProduct];
 
+    const updatedWishlist = [...userWishlist.wishlist_product_list, newProduct];
+    console.log("updatedWishlist: ", updatedWishlist);
     const userWishlistUpdatedWithProduct = {
       user: userWishlist.user,
       wishlist_product_list: updatedWishlist,
@@ -91,7 +92,8 @@ const addProductToUserWishlist = async (req, res) => {
 
 const removeProductFromUsersWishlist = async (req, res) => {
   try {
-    const { id, product_id } = req.body;
+    const { product_id } = req.body;
+    const id = req.user;
     const userWishlist = await WishList.findOne({ user: id });
     const { wishlist_product_list } = userWishlist;
 

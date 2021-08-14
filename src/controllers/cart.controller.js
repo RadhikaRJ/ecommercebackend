@@ -26,7 +26,7 @@ const getCartDetailsAssociatedWithUserId = async (req, res) => {
       });
     }
 
-    res.status(200).send(userCart);
+    res.status(200).json({ success: true, userCart });
   } catch (error) {
     console.log(error);
     res.status(500).json({

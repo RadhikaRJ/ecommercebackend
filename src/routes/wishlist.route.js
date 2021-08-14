@@ -2,6 +2,7 @@ const express = require("express");
 const { extend } = require("lodash");
 const router = express.Router();
 const controllers = require("../controllers/wishlist.controller");
+const { userAuthentication } = require("../middleware/userAuthentication");
 const {
   addProductToUserWishlist,
   retrieveAllProductsInUserWishlist,
@@ -18,97 +19,9 @@ function wishlistMiddleware(req, res, next) {
 }
 
 router.use("/:id", wishlistMiddleware);
-router.get("/", retrieveAllProductsInUserWishlist);
-router.post("/", addProductToUserWishlist);
-router.delete("/", removeProductFromUsersWishlist);
-// router
-//   .route("/")
-//   .get(async (req, res) => {
-//     try {
-//       const wishlistItems = await WishList.find({});
-//       res.json({ success: true, wishlistItems });
-//     } catch (error) {
-//       res.status(500).json({
-//         success: false,
-//         message: "unable to retrieve wishlist data",
-//         errMsg: error.message,
-//       });
-//     }
-//   })
-//   .post(async (req, res) => {
-//     try {
-//       const wishlistItems = req.body;
-//       let newWishlistItems = new WishList(wishlistItems);
-//       newWishlistItems = await newWishlistItems.save();
-//       res.json({ success: true, newWishlistItems });
-//     } catch (error) {
-//       res.status(500).json({
-//         success: false,
-//         message: "unable to insert wishlist data",
-//         errMsg: error.message,
-//       });
-//     }
-//   });
 
-// router.param("wishlistId", async (req, res, next, wishlistId) => {
-//   try {
-//     const wishlist = await WishList.findOne({ _id: wishlistId }).populate(
-//       "wishlist_product_list.product_id",
-//       [
-//         "name",
-//         "description",
-//         "price",
-//         "offer_id",
-//         "category_id",
-//         "availability",
-//         "fast_delivery",
-//         "url",
-//         "quantity",
-//       ]
-//     );
-//     if (!wishlist) {
-//       res.json({ success: false, message: "Unable to find wishlist" });
-//     }
-//     req.wishlist = wishlist;
-//     next();
-//   } catch (error) {
-//     res.status(400).json({
-//       success: false,
-//       errMsg: error.message,
-//       message: "Unable to find wishlist",
-//     });
-//   }
-// });
-
-// router
-//   .route("/:wishlistId")
-//   .get((req, res) => {
-//     try {
-//       let { wishlist } = req;
-//       res.json({ success: true, wishlist });
-//     } catch (error) {
-//       res.status(400).json({
-//         success: false,
-//         errMsg: error.message,
-//         message: "Unable to fetch wishlist",
-//       });
-//     }
-//   })
-//   .post(async (req, res) => {
-//     let { wishlist } = req;
-//     const updatedWishlist = req.body;
-
-//     try {
-//       wishlist = extend(wishlist, updatedWishlist);
-//       wishlist = await wishlist.save();
-//       res.json({ success: true, wishlist });
-//     } catch (error) {
-//       res.status(400).json({
-//         success: false,
-//         errMsg: error.message,
-//         message: "Unable to update wishlist",
-//       });
-//     }
-//   });
+router.get("/", userAuthentication, retrieveAllProductsInUserWishlist);
+router.post("/", userAuthentication, addProductToUserWishlist);
+router.delete("/", userAuthentication, removeProductFromUsersWishlist);
 
 module.exports = router;
