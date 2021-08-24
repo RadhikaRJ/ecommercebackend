@@ -3,7 +3,7 @@ const { Product } = require("../models/product.model");
 
 const getCartDetailsAssociatedWithUserId = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id = req.user;
     const userCart = await Cart.findOne({ user: id }).populate(
       "cart_product_list.itemInCart_id",
       [
@@ -39,7 +39,8 @@ const getCartDetailsAssociatedWithUserId = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   try {
-    const { id, itemInCart_id, itemInCart_quantity } = req.body;
+    const id = req.user;
+    const { itemInCart_id, itemInCart_quantity } = req.body;
 
     console.log("productID", itemInCart_id, "quantity", itemInCart_quantity);
     const productRegistered = await Product.findById({ _id: itemInCart_id });
@@ -106,7 +107,7 @@ const addProductToCart = async (req, res) => {
 
 const updateProductDetailsInCart = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.user;
     const { itemInCart_id, itemInCart_quantity } = req.body;
 
     const userCart = await Cart.findOne({ user: id });
@@ -159,7 +160,7 @@ const updateProductDetailsInCart = async (req, res) => {
 
 const removeProductFromCart = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.user;
     const { itemInCart_id } = req.body;
 
     const userCart = await Cart.findOne({ user: id });

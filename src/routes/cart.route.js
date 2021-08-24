@@ -3,6 +3,7 @@ const { Cart } = require("../models/cart.model");
 const { extend } = require("lodash");
 const router = express.Router();
 const controllers = require("../controllers/cart.controller");
+const { userAuthentication } = require("../middleware/userAuthentication");
 const {
   getCartDetailsAssociatedWithUserId,
   addProductToCart,
@@ -20,13 +21,13 @@ function cartMiddleware(req, res, next) {
 
 router.use("/:id", cartMiddleware);
 //get user's cart details
-router.get("/", getCartDetailsAssociatedWithUserId);
+router.get("/", userAuthentication, getCartDetailsAssociatedWithUserId);
 //add product to user's cart
-router.post("/", addProductToCart);
+router.post("/", userAuthentication, addProductToCart);
 //update product in user's cart
-router.post("/:id", updateProductDetailsInCart);
+router.post("/:id", userAuthentication, updateProductDetailsInCart);
 //delete product from user's cart
-router.delete("/:id", removeProductFromCart);
+router.delete("/:id", userAuthentication, removeProductFromCart);
 
 // router
 //   .route("/")
