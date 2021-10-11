@@ -27,7 +27,7 @@ router.post("/", userAuthentication, addProductToCart);
 //update product in user's cart
 router.post("/:id", userAuthentication, updateProductDetailsInCart);
 //delete product from user's cart
-router.delete("/:id", userAuthentication, removeProductFromCart);
+router.delete("/", userAuthentication, removeProductFromCart);
 
 // router
 //   .route("/")
