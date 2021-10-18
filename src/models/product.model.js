@@ -38,6 +38,9 @@ const ProductSchema = new Schema(
       required:
         "Quantity of product is required. set value to 1 when inserting new product data details.",
     },
+    wishlisted: {
+      type: Boolean,
+    },
   },
   {
     timestamp: true,

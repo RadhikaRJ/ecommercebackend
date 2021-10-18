@@ -83,6 +83,7 @@ const updateProductDetails = async (req, res) => {
       fast_delivery,
       url,
       quantity,
+      wishlisted,
     } = req.body;
 
     const verifyIfProductExists = await Product.findById({ _id: id });
@@ -101,6 +102,7 @@ const updateProductDetails = async (req, res) => {
       fast_delivery,
       url,
       quantity,
+      wishlisted,
     };
 
     const updatedProduct = await Product.findOneAndUpdate(
